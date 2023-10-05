@@ -7,6 +7,11 @@ class List:
     def __init__(self):
         self.head = None
 
+    def insertAtBegin(self, value):
+        node = Node(value)
+        node.next = self.head
+        self.head = node
+
     def insertAtPosition(self, value, position):
         node = Node(value)
         if self.head is None:
@@ -70,5 +75,8 @@ print(list.getElementAtPosition(1))
 print(list.getElementAtPosition(0))
 list.insertAtEnd('Rafael')
 list.insertAtEnd('Leonardo')
+list.printLinkedList()
+list.insertAtBegin('Cristiano')
+list.insertAtBegin('Mario')
 list.printLinkedList()
 
