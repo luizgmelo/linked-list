@@ -26,7 +26,7 @@ class List:
         node.next = currentNode.next
         currentNode.next = node
 
-    def instertAtEnd(self, value):
+    def insertAtEnd(self, value):
         node = Node(value)
         if (self.head is None):
             self.head = node
@@ -68,6 +68,7 @@ list.insertAtPosition('Z', 0)
 list.printLinkedList()
 print(list.getElementAtPosition(1))
 print(list.getElementAtPosition(0))
-list.instertAtEnd('Rafael')
-list.instertAtEnd('Leonardo')
+list.insertAtEnd('Rafael')
+list.insertAtEnd('Leonardo')
 list.printLinkedList()
+
