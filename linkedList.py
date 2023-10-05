@@ -26,6 +26,15 @@ class List:
         node.next = currentNode.next
         currentNode.next = node
 
+    def instertAtEnd(self, value):
+        node = Node(value)
+        if (self.head is None):
+            self.head = node
+        currentNode = self.head
+        while currentNode.next is not None:
+            currentNode = currentNode.next
+        currentNode.next = node
+
     def getElementAtPosition(self, position):
         if (self.head is None):
             return None
@@ -59,4 +68,6 @@ list.insertAtPosition('Z', 0)
 list.printLinkedList()
 print(list.getElementAtPosition(1))
 print(list.getElementAtPosition(0))
-
+list.instertAtEnd('Rafael')
+list.instertAtEnd('Leonardo')
+list.printLinkedList()
