@@ -25,7 +25,18 @@ class List:
         
         node.next = currentNode.next
         currentNode.next = node
+
+    def getElementAtPosition(self, position):
+        if (self.head is None):
+            return None
         
+        currentNode = self.head
+        i = 0
+        while currentNode is not None and i < position:
+            currentNode = currentNode.next
+            i += 1
+        return currentNode.value
+
     def printLinkedList(self):
         currentNode = self.head
         while currentNode is not None:
@@ -46,4 +57,6 @@ list.insertAtPosition('Manoel', 1)
 list.printLinkedList()
 list.insertAtPosition('Z', 0)
 list.printLinkedList()
+print(list.getElementAtPosition(1))
+print(list.getElementAtPosition(0))
 
