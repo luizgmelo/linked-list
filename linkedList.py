@@ -103,6 +103,11 @@ class List:
             i += 1
         return currentNode.value
 
+    def getHead(self):
+        if self.head is None:
+            return
+        return self.head.value
+
     def indexOf(self, value):
         currentNode = self.head
         if (self.head == None):
@@ -136,6 +141,7 @@ class List:
 
 
 list = List()
+print(list.getHead())
 print(list.removeAtElement("a"))
 print(list.isEmpty())
 list.printLinkedList()
@@ -182,3 +188,4 @@ list.removeAtElement("Joao")
 list.removeAtElement("Luiz")
 print(list.removeAtElement("Raimundo"))
 list.printLinkedList()
+print(list.getHead())
