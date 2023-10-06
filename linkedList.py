@@ -41,11 +41,15 @@ class List:
         currentNode.next = node
 
     def removeAtBegin(self):
+        if self.head is None:
+            return
         removed = self.head.value
         self.head = self.head.next
         return removed
     
     def removeAtEnd(self):
+        if self.head is None:
+            return
         currentNode = self.head
         while currentNode.next is not None:
             previousNode = currentNode
