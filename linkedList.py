@@ -51,6 +51,16 @@ class List:
             i += 1
         return currentNode.value
 
+    def size(self):
+        if (self.head == None):
+            return 0
+        currentNode = self.head
+        count = 1
+        while currentNode.next is not None:
+            currentNode = currentNode.next
+            count += 1
+        return count
+
     def printLinkedList(self):
         currentNode = self.head
         while currentNode is not None:
@@ -79,4 +89,4 @@ list.printLinkedList()
 list.insertAtBegin('Cristiano')
 list.insertAtBegin('Mario')
 list.printLinkedList()
-
+print(list.size())
