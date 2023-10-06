@@ -66,7 +66,6 @@ class List:
         previous.next = currentNode.next
         return removed
 
-
     def removeAtEnd(self):
         if self.head is None:
             return
@@ -77,6 +76,21 @@ class List:
         removed = currentNode.value
         previousNode.next = currentNode.next
         return removed
+
+    def removeAtElement(self, element):
+        if self.head is None:
+            return
+        currentNode = self.head
+        currentNodeElement = currentNode.value
+        while currentNode.next is not None and currentNodeElement != element:       
+            previousNode = currentNode
+            currentNode = currentNode.next 
+            currentNodeElement = currentNode.value
+        if currentNodeElement == element:
+            removed = currentNodeElement
+            previousNode.next = currentNode.next
+            return removed
+        return
 
     def getElementAtPosition(self, position):
         if (self.head is None):
@@ -122,6 +136,7 @@ class List:
 
 
 list = List()
+print(list.removeAtElement("a"))
 print(list.isEmpty())
 list.printLinkedList()
 list.insertAtPosition('Guilherme', 0)
@@ -158,4 +173,12 @@ print(list.removeAtPosition(0))
 print(list.removeAtPosition(0))
 print(list.removeAtPosition(100))
 print(list.removeAtPosition(100))
+list.printLinkedList()
+list.insertAtBegin("Marcondes")
+list.insertAtBegin("Joao")
+list.insertAtBegin("Jose")
+list.insertAtEnd("Luiz")
+list.removeAtElement("Joao")
+list.removeAtElement("Luiz")
+print(list.removeAtElement("Raimundo"))
 list.printLinkedList()
