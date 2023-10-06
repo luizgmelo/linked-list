@@ -51,6 +51,17 @@ class List:
             i += 1
         return currentNode.value
 
+    def indexOf(self, value):
+        currentNode = self.head
+        if (self.head == None):
+            return None
+        currentNode = self.head
+        i = 0
+        while currentNode.next is not None and currentNode.value != value:
+            currentNode = currentNode.next
+            i += 1
+        return i
+
     def size(self):
         if (self.head == None):
             return 0
@@ -90,3 +101,5 @@ list.insertAtBegin('Cristiano')
 list.insertAtBegin('Mario')
 list.printLinkedList()
 print(list.size())
+print(list.indexOf('Guilherme'))
+print(list.getElementAtPosition(list.indexOf('Guilherme')))
