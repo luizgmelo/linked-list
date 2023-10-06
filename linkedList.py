@@ -72,6 +72,9 @@ class List:
             count += 1
         return count
 
+    def isEmpty(self):
+        return self.head == None
+
     def printLinkedList(self):
         currentNode = self.head
         while currentNode is not None:
@@ -81,8 +84,10 @@ class List:
 
 
 list = List()
+print(list.isEmpty())
 list.printLinkedList()
 list.insertAtPosition('Guilherme', 0)
+print(list.isEmpty())
 list.printLinkedList()
 list.insertAtPosition('Gabriel', 1)
 list.printLinkedList()
@@ -103,3 +108,4 @@ list.printLinkedList()
 print(list.size())
 print(list.indexOf('Guilherme'))
 print(list.getElementAtPosition(list.indexOf('Guilherme')))
+print(list.isEmpty())
