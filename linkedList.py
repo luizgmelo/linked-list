@@ -1,144 +1,203 @@
-class Node:
-    def __init__(self, value, next = None):
-        self.value = value
-        self.next = next
-
-class List:
+class LinkedList:
+    class Node:
+        def __init__(self, element, next = None):
+            self.element = element
+            self.next = next
     def __init__(self):
         self.head = None
+        self.tail = None
+        self.count = 0
 
-    def insertAtBegin(self, value):
-        node = Node(value)
-        node.next = self.head
-        self.head = node
-
-    def insertAtPosition(self, value, position):
-        node = Node(value)
-        if self.head is None:
-            self.head = node
-            return
-
-        currentNode = self.head
-        i = 0
-        while currentNode.next is not None and i < position - 1:
-            currentNode = currentNode.next
-
-        if (position == 0):
-            node.next = currentNode
-            self.head = node
-            return
+    def __setitem__(self, position, element):
+        if position < 0:
+            position = len(self) + position
         
-        node.next = currentNode.next
-        currentNode.next = node
+        if position < 0 or position >= len(self):
+            raise IndexError('Invalid Position')
 
-    def insertAtEnd(self, value):
-        node = Node(value)
-        if (self.head is None):
-            self.head = node
-        currentNode = self.head
-        while currentNode.next is not None:
-            currentNode = currentNode.next
-        currentNode.next = node
+        current = self.head
+        i = 0
+        while i < position:
+            current = current.next
+            i += 1
+        
+        current.element = element
 
-    def removeAtBegin(self):
+    def __str__(self):
+        current = self.head
         if self.head is None:
-            return
-        removed = self.head.value
-        self.head = self.head.next
-        return removed
+            return '[]'
+        string = f'[{current.element}'
+        while current.next is not None:
+            string = f'{string}, {current.next.element}'
+            current = current.next
+        return string + ']'
     
-    def removeAtPosition(self, position):
-        if self.head is None:
-            return
-        currentNode = self.head
-        onlyOneElement = self.head.next is None
-        i = 0
-        if (position == 0) | (onlyOneElement):
-            removed = self.head.value
+    def __len__(self):
+        return self.count
+
+    def __iter__(self):
+        current = self.head
+        while current is not None:
+            yield current.element
+            current = current.next
+        
+    def __delitem__(self, position):
+        if position < 0:
+            position = len(self) + position
+
+        if position < 0 or position >= len(self):
+            raise IndexError('Invalid Position')
+        
+        self.count -= 1
+
+        if position == 0:
             self.head = self.head.next
-            return removed
+            if self.head is None:
+                self.tail = None
+            return
         
-        while currentNode.next is not None and i < position:
-            previous = currentNode
-            currentNode = currentNode.next
+        current = self.head
+        i = 0
+        while i < position - 1:
+            current = current.next
             i += 1
-        removed = currentNode.value
-        previous.next = currentNode.next
+        current.next = current.next.next
+
+    def __getitem__(self, position):
+        if isinstance(position, slice):
+            step = position.step if position.step is not None else 1
+
+            if step == 0:
+                raise ValueError('Step cannot be zero.')
+
+            if step > 0:
+                start = position.start if position.start is not None else 0
+                stop = position.stop if position.stop is not None else len(self)
+            else:
+                start = position.start if position.start is not None else len(self) - 1
+                stop = position.stop if position.stop is not None else -1
+
+            if start < 0:
+                start = len(self) + start
+
+            if stop < 0 and position.stop is not None:
+                stop = len(self) + stop
+
+            part = LinkedList()
+            scope = range(start,stop,step)
+             
+            if step > 0:
+                i = 0
+                it = iter(self)
+                while i < stop:
+                    element = next(it)
+                    if i in scope:
+                        part.append(element)
+                    i += 1
+            else:
+                for i in scope:
+                    part.append(self[i])
+            return part
+
+        if position < 0:
+            position = len(self) + position
+        if position < 0 or position >= self.count:
+            raise IndexError('Invalid Position')
+        current = self.head
+        i = 0
+        while i < position:
+            current = current.next
+            i += 1
+        return current.element
+
+    def __reversed__(self):
+        return self[::-1]
+
+
+    def append(self, element):
+        node = self.Node(element)
+        self.count += 1
+    
+        if self.tail is None:
+            self.head = node
+            self.tail = node
+            return
+      
+        self.tail.next = node
+        self.tail = node
+    
+    def insert(self, position, element):
+        node = self.Node(element)
+        self.count += 1
+        if self.head is None:
+            self.head = node
+            self.tail = self.head
+            return
+        if position == 0:
+            node.next = self.head
+            self.head = node
+            return
+        current = self.head
+        i = 0
+        while current.next is not None and i < position - 1:
+            current = current.next
+            i += 1
+
+        if current == self.tail:
+            self.tail = node
+
+        node.next = current.next
+        current.next = node
+
+    def copy(self):
+        return self[:]
+    
+    def extend(self, iterable):
+        if iterable is None or not hasattr(iterable, '__iter__'):
+            raise TypeError('Object is not iterable')
+        
+        for item in iterable:
+            self.append(item)
+
+    def indexOf(self, element):
+        i = 0
+        current = self.head
+        while current is not None:
+            if current.element == element:
+                return i
+            current = current.next
+            i += 1
+        raise ValueError('x not in list')
+
+    def remove(self, element):
+        position = self.indexOf(element)
+        del self[position]
+
+    def pop(self, position=None):
+        if position is None:
+            position = len(self) - 1
+
+        if position < 0:
+            position = len(self) + position
+
+        removed = self[position]
+        del self[position]
+
         return removed
 
-    def removeAtEnd(self):
-        if self.head is None:
-            return
-        currentNode = self.head
-        while currentNode.next is not None:
-            previousNode = currentNode
-            currentNode = currentNode.next
-        removed = currentNode.value
-        previousNode.next = currentNode.next
-        return removed
+    def clear(self):
+        self.head = None
+        self.tail = None
+        self.count = 0
 
-    def removeAtElement(self, element):
-        if self.head is None:
-            return
-        currentNode = self.head
-        currentNodeElement = currentNode.value
-        while currentNode.next is not None and currentNodeElement != element:       
-            previousNode = currentNode
-            currentNode = currentNode.next 
-            currentNodeElement = currentNode.value
-        if currentNodeElement == element:
-            removed = currentNodeElement
-            previousNode.next = currentNode.next
-            return removed
-        return
-
-    def getElementAtPosition(self, position):
-        if (self.head is None):
-            return None
-        
-        currentNode = self.head
+    def reverse(self):
+        reversed = self[::-1]
+        self.clear()
+        it = iter(reversed)
         i = 0
-        while currentNode is not None and i < position:
-            currentNode = currentNode.next
+        while i < len(reversed):
+            self.append(next(it))
             i += 1
-        return currentNode.value
 
-    def getHead(self):
-        if self.head is None:
-            return
-        return self.head.value
-
-    def indexOf(self, value):
-        currentNode = self.head
-        if (self.head == None):
-            return None
-        currentNode = self.head
-        i = 0
-        while currentNode.next is not None and currentNode.value != value:
-            currentNode = currentNode.next
-            i += 1
-        return i
-
-    def size(self):
-        if (self.head == None):
-            return 0
-        currentNode = self.head
-        count = 1
-        while currentNode.next is not None:
-            currentNode = currentNode.next
-            count += 1
-        return count
-
-    def isEmpty(self):
-        return self.head == None
-
-    def printLinkedList(self):
-        currentNode = self.head
-        while currentNode is not None:
-            print(currentNode.value, "->", end=' ')
-            currentNode = currentNode.next
-        print("None")
-
-
-list = List()
-print(list.isEmpty())
+my_list = LinkedList()
